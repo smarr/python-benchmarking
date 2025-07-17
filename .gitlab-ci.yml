@@ -1,0 +1,54 @@
+stages:
+  - benchmark
+
+variables:
+  PYTHONUNBUFFERED: "true"
+
+.shared-scripts:
+  install-py-deps: &INSTALL_PY_DEPS |
+    python3 -m venv pyperf-venv/
+    source pyperf-venv/bin/activate
+    python3 -m pip install pyperformance
+    ~/.asdf/bin/asdf install python 3.13.5
+
+  run-benchmarks: &RUN_BENCHMARKS |
+    pyperformance run --python=~/.asdf/installs/python/3.13.5/bin/python -o py313.json
+
+before_script:
+  - sudo reown-project.sh || true
+
+
+benchmark-y1:
+  stage: benchmark
+  tags: [yuria]
+  script:
+    - *INSTALL_PY_DEPS
+    - *RUN_BENCHMARKS
+
+benchmark-y2:
+  stage: benchmark
+  tags: [yuria2]
+  script:
+    - *INSTALL_PY_DEPS
+    - *RUN_BENCHMARKS
+
+benchmark-y3:
+  stage: benchmark
+  tags: [yuria3]
+  script:
+    - *INSTALL_PY_DEPS
+    - *RUN_BENCHMARKS
+
+benchmark-y4:
+  stage: benchmark
+  tags: [yuria4]
+  script:
+    - *INSTALL_PY_DEPS
+    - *RUN_BENCHMARKS
+
+benchmark-z1:
+  stage: benchmark
+  tags: [zullie1]
+  script:
+    - *INSTALL_PY_DEPS
+    - *RUN_BENCHMARKS
